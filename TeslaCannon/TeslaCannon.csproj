@@ -98,6 +98,9 @@
     <EmbeddedResource Include="D:\HearthNHome\valheim\AssetBundles\StandaloneWindows\teslacoil">
       <Link>teslacoil</Link>
     </EmbeddedResource>
+    <EmbeddedResource Include="D:\HearthNHome\valheim\Assets\LOD\Scripts\LOD.dll">
+      <Link>LOD.dll</Link>
+    </EmbeddedResource>
     <Content Include="Package\icon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -89,7 +89,6 @@ public class TeslaCommander : MonoBehaviour
     
     internal IEnumerator LightningStrike()
     {
-
             Instantiate(LightningStrikeVFX, strikelocation, false);
             hum.ApplyDamage(hitdata, true, triggerEffects: false, HitData.DamageModifier.Weak);
             yield return new WaitForSeconds(2.5f);
@@ -101,7 +100,7 @@ public class TeslaCommander : MonoBehaviour
         {
             _area = GetComponentInParent<PrivateArea>();
         }
-        
+        _area.m_name = "Tesla Cannon";
         InvokeRepeating(nameof(Castlightning), 0f, 1);
     }
     

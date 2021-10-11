@@ -1,4 +1,6 @@
-﻿using BepInEx;
+﻿using System.IO;
+using System.Reflection;
+using BepInEx;
 using Jotunn.Configs;
 using Jotunn.Entities;
 using Jotunn.Managers;
@@ -19,9 +21,16 @@ namespace TeslaCannon
 
         private void Awake()
         {
+            Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("TeslaCannon.LOD.dll");
+
+            byte[] buffer = new byte[stream.Length];
+
+            stream.Read(buffer, 0, buffer.Length);
+
+            Assembly assembly = Assembly.Load(buffer);
             LoadAssets();
         }
-
+        
         private void LoadAssets()
         {
             AssetBundle assetBundle =
@@ -37,7 +46,8 @@ namespace TeslaCannon
                 Description = "A handy zapper for those deathsquitos ;) ",
                 Requirements = new RequirementConfig[]
                 {
-                    new RequirementConfig { Amount = 1, Item = "Wood", Recover = false }
+                    new RequirementConfig { Amount = 5, Item = "Flametal", Recover = false },
+                    new RequirementConfig { Amount = 3, Item = "Thunderstone", Recover = false}
                 }
             });
             PieceManager.Instance.AddPiece(CP);
