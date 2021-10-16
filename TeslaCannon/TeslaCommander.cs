@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 
 public class TeslaCommander : MonoBehaviour
@@ -26,18 +25,12 @@ public class TeslaCommander : MonoBehaviour
                 if (hitcollider.gameObject.GetComponent<MonsterAI>() != null)
                 {
                     if (hitcollider.gameObject.GetComponent<Humanoid>().m_tamed == true) return;
-                    try
-                    { 
+
                         var tame = hitcollider.GetComponent<Tameable>();
                         if(tame != null)
                             if (tame.GetTameness() > 0) return;
-                    }
-                    catch (Exception e)
-                    {
-                        Jotunn.Logger.LogInfo(e);
-                    }
-                   
-                    var tmp = hitcollider.gameObject;
+
+                        var tmp = hitcollider.gameObject;
                     _collider = hitcollider;
                     hum = tmp.GetComponent<Humanoid>();
                     hitdata = new HitData
@@ -80,9 +73,10 @@ public class TeslaCommander : MonoBehaviour
     
     internal IEnumerator LightningStrike()
     {
-        Instantiate(LightningStrikeVFX, strikelocation, false);
-        hum.ApplyDamage(hitdata, true, triggerEffects: false, HitData.DamageModifier.Weak);
-        yield return new WaitForSeconds(2.5f);
+            Instantiate(LightningStrikeVFX, strikelocation, false);
+            hum.ApplyDamage(hitdata, true, triggerEffects: false, HitData.DamageModifier.Weak);
+            yield return new WaitForSeconds(2.5f);
+        
     }
     
     private void OnEnable()
