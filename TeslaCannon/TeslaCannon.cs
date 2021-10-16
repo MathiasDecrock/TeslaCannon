@@ -22,11 +22,11 @@ namespace TeslaCannon
         private void Awake()
         {
             Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("TeslaCannon.LOD.dll");
-
+            
             byte[] buffer = new byte[stream.Length];
-
+            
             stream.Read(buffer, 0, buffer.Length);
-
+            
             Assembly assembly = Assembly.Load(buffer);
             LoadAssets();
         }
