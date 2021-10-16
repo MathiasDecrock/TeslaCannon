@@ -7,12 +7,13 @@ public class TeslaCommander : MonoBehaviour
 {
     [SerializeField] internal ParticleAttractor _particleAttractor;
     [SerializeField] internal PrivateArea _area;
-
+    private ZNetView m_nview;
     private GameObject LightningStrikeVFX;
     private Coroutine strikeRoutine;
 
     private void Awake()
     {
+        m_nview = GetComponent<ZNetView>();
         LightningStrikeVFX = ZNetScene.instance.GetPrefab("lightningAOE");
     }
 
@@ -38,11 +39,17 @@ public class TeslaCommander : MonoBehaviour
 
     private void Castlightning()
     {
+        if(!m_nview.IsOwner())
+        {
+            //We're not the owner, check again next time, maybe the owner left
+            return;
+        }
+
         if (!_area.IsEnabled())
         {
             if (strikeRoutine != null)
             {
-                //Fizzle
+                //Fizzle animation? :D
                 StopCoroutine(strikeRoutine);
                 strikeRoutine = null;
             }
@@ -115,6 +122,7 @@ public class TeslaCommander : MonoBehaviour
             HitData hitData = LightingStrike(damage, GetTopCollider(target));
             target.ApplyDamage(hitData, true, triggerEffects: false, HitData.DamageModifier.Weak);
         }
+
         strikeRoutine = null;
     }
 
