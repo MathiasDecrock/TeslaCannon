@@ -7,7 +7,7 @@ public class TeslaCommander : MonoBehaviour
     [SerializeField] internal ParticleAttractor _particleAttractor;
     [SerializeField] internal PrivateArea _area;
     private Humanoid hum;
-    private HitData hitdata;
+    private HitData hitdata = new HitData();
     private GameObject LightningStrikeVFX;
     private Transform strikelocation;
     private Collider _collider;
@@ -15,10 +15,8 @@ public class TeslaCommander : MonoBehaviour
     private void Awake()
     {
        LightningStrikeVFX = ZNetScene.instance.GetPrefab("lightningAOE");
-       //_particleAttractor.particlesAttractor = hitcollider.transform;
     }
     
-
     private void Castlightning()
     {
         if (!_area.IsEnabled()) return;
@@ -42,9 +40,7 @@ public class TeslaCommander : MonoBehaviour
                     var tmp = hitcollider.gameObject;
                     _collider = hitcollider;
                     hum = tmp.GetComponent<Humanoid>();
-                    try
-                    {
-                        hitdata = new HitData
+                    hitdata = new HitData
                         {
                             m_attacker = Player.m_localPlayer.GetZDOID(),
                             m_blockable = false,
@@ -69,17 +65,12 @@ public class TeslaCommander : MonoBehaviour
                             m_backstabBonus = 0f,
                             m_hitCollider = _collider,
                             m_pushForce = 3.5f,
-                            m_staggerMultiplier = 0.01f,
+                            m_staggerMultiplier = 0.05f,
                             m_toolTier = 10,
                             m_statusEffect = "",
                             m_point = Vector3.zero
                         };
-                    }
-                    catch (Exception e)
-                    {
-                        Jotunn.Logger.LogError(e);
-                    }
-                   
+
                     strikelocation = hum.transform;
                     _particleAttractor.particlesAttractor = hum.transform;
                     StartCoroutine(LightningStrike());
@@ -89,9 +80,9 @@ public class TeslaCommander : MonoBehaviour
     
     internal IEnumerator LightningStrike()
     {
-            Instantiate(LightningStrikeVFX, strikelocation, false);
-            hum.ApplyDamage(hitdata, true, triggerEffects: false, HitData.DamageModifier.Weak);
-            yield return new WaitForSeconds(2.5f);
+        Instantiate(LightningStrikeVFX, strikelocation, false);
+        hum.ApplyDamage(hitdata, true, triggerEffects: false, HitData.DamageModifier.Weak);
+        yield return new WaitForSeconds(2.5f);
     }
     
     private void OnEnable()
